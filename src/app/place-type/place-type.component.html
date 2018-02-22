@@ -1,0 +1,533 @@
+<!--<mat-sidenav-container class="">
+  <mat-toolbar>
+    <div class="container">
+      <div class="example-sidenav-content">
+        <button mat-button class="sidenav-toggle mat-button" [ngStyle]="{'background':'transparent'}" (click)="sidenav.open()"><mat-icon>home</mat-icon>
+</button>
+      </div>
+    </div>
+  </mat-toolbar>
+  <p>hmmmmmm</p>
+  <mat-sidenav #sidenav class="example-sidenav">
+    <p>I am sidenav</p>
+  </mat-sidenav>
+</mat-sidenav-container> -->
+<div class="container">
+<mat-toolbar [ngStyle]="{'background':'red','box-shadow':'0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)','position': 'fixed', 'right':' 0', 'left':' 0', 'z-index': '1030'}">
+  <h1 [ngStyle]="{'margin': 'auto','display':'block','font-family': 'Sofia','font-size':'22px','color':'white'}">Places</h1></mat-toolbar>
+<br>
+<br>
+<br>
+<br>
+<mat-tab-group (selectChange)="setType($event)">
+  <mat-tab label="Restaurant"> <ng-template mat-tab-label><i class="fa fa-cutlery"></i></ng-template></mat-tab>
+  <mat-tab label="cafe"> <ng-template mat-tab-label><i class="fa fa-coffee"></i></ng-template></mat-tab>
+  <mat-tab label="mall"> <ng-template mat-tab-label><i class="fa fa-shopping-bag"></i></ng-template></mat-tab>
+  <mat-tab label="pharmacy"> <ng-template mat-tab-label><i class="fa fa-medkit"></i></ng-template></mat-tab>
+  <mat-tab label="taxi"> <ng-template mat-tab-label><i class="fa fa-taxi"></i></ng-template></mat-tab>
+  <mat-tab label="bus"> <ng-template mat-tab-label><i class="fa fa-bus"></i></ng-template></mat-tab>
+  <mat-tab label="airport"> <ng-template mat-tab-label><i class="fa fa-plane"></i></ng-template></mat-tab>
+  <mat-tab label="art_gallery"> <ng-template mat-tab-label><i class="fa fa-paint-brush"></i></ng-template></mat-tab>
+  <mat-tab label="bar"> <ng-template mat-tab-label><i class="fa fa-beer"></i></ng-template></mat-tab>
+  <mat-tab label="book"> <ng-template mat-tab-label><i class="fa fa-book"></i></ng-template></mat-tab>
+  <mat-tab label="art_gallery"> <ng-template mat-tab-label><i class="fa fa-paint-brush"></i></ng-template></mat-tab>
+  <mat-tab label="hospital"> <ng-template mat-tab-label><i class="fa fa-hospital"></i></ng-template></mat-tab>
+  <mat-tab label="ambulance"> <ng-template mat-tab-label><i class="fa fa-ambulance"></i></ng-template></mat-tab>
+
+  <mat-tab [label]="search" *ngFor="let search of options"></mat-tab>
+</mat-tab-group>
+
+
+  <!--<p [ngStyle]="{'margin': 'auto','display':'block'}">Nearby</p>
+  <div class="row" [ngStyle]="{'width': '100%'}">
+    <div class="col-md-6">
+      <h2 [ngStyle]="{'margin': 'auto','display':'block','width': '100%'}">Nearby</h2>
+
+    </div>
+    <div class="col-md-6">
+
+    </div>
+  </div>-->
+
+
+
+  <br>
+  <div class="row">
+    <div class="col-sm-8">
+
+      <form class="example-form">
+        <mat-form-field class="example-full-width" [ngStyle]="{'width': '100%'}">
+          <input [ngStyle]="{'text-align': 'center'}" type="text" placeholder="Find any place anywhere" (ngModelChange)="enableButton($event)" aria-label="Number" [(ngModel)]="type" matInput [formControl]="myControl" [matAutocomplete]="auto">
+          <mat-icon matSuffix>mode_edit</mat-icon>
+
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{ option }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+    </div>
+    <div class="col-sm-4">
+    <!--  <button [disabled]="enable" [ngStyle]="{'width': '100%'}" mat-raised-button color="primary" (click)="enableSearch(type)">-->
+<div [ngStyle]="{'display': 'flex'}">
+  <button [disabled]="enable" [ngStyle]="{'width': '50%','margin-right':'10px'}" mat-raised-button  (click)="a=false;accCheck(true)">
+    <span class="fa fa-facebook"></span>
+
+  <span class="glyphicon glyphicon-search" *ngIf="a==false"></span>
+  </button>
+    <button [disabled]="enable" [ngStyle]="{'width': '50%'}" mat-raised-button  (click)="a=true;accCheck(false)">
+      <span class="fa fa-google"></span>
+
+    <span class="glyphicon glyphicon-search"  *ngIf="a==true"></span>
+    </button>
+
+    </div>
+  </div>
+  </div>
+  <!--
+<mat-form-field class="example-full-width" *ngIf="dataFrom=='google' && type!=''" [ngStyle]="{'width': '100%'}">
+  <input matInput placeholder="Any Specific ?" [(ngModel)]="keyword">
+</mat-form-field>
+
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="lat" [(ngModel)]="lat">
+</mat-form-field>
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="long" [(ngModel)]="long">
+</mat-form-field>
+<mat-form-field class="example-full-width" [ngStyle]="{'width': '100%'}">
+  <input matInput placeholder="KM" [ngStyle]="{'text-align': 'center'}" (ngModelChange)="enableSearch(type)" [(ngModel)]="radius">
+</mat-form-field>
+<mat-slider (change)="enableSearch(type)" [(ngModel)]="radius" max="20" min="1" [ngStyle]="{'width': '100%'}"></mat-slider> -->
+
+<br>
+<mat-accordion [ngStyle]="{'box-shadow':'0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)'}">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <span class="glyphicon glyphicon-menu-hamburger"></span>
+    </mat-expansion-panel-header>
+
+    <div class="row">
+      <div class="col-md-6">
+        <table class="table" [ngStyle]="{'margin-bottom': '0px'}">
+          <tr>
+            <td [ngStyle]="{'border':'none','width':'180px'}" width="180px">Search Within </td>
+            <td [ngStyle]="{'border':'none'}">
+              <mat-form-field class="example-full-width" [ngStyle]="{'width': '50%','top':'-20px','height':'20px'}">
+                <input matInput [ngStyle]="{'text-align': 'center'}" (ngModelChange)="enableSearch(type)" [(ngModel)]="radius">
+              </mat-form-field>
+
+            </td>
+          </tr>
+          <tr>
+            <td [ngStyle]="{'border':'none'}">Your location</td>
+            <td [ngStyle]="{'border':'none'}">
+              <p *ngIf="lat==null" (click)="getLocation()">
+                Getting your current location.
+              </p>
+              <p *ngIf="lat!=null" [ngStyle]="{'text-align': 'start'}">
+                {{showShortCoord(lat,long)}}
+                <span class="glyphicon glyphicon-repeat" *ngIf="upon==false" (click)="updatePosition()"></span>
+                <span class="glyphicon glyphicon-refresh" *ngIf="upon==true"></span>
+              </p>
+
+            </td>
+          </tr>
+          <tr>
+            <td [ngStyle]="{'border':'none'}">Set Location</td>
+            <td [ngStyle]="{'border':'none'}">
+          <mat-slide-toggle [(ngModel)]="setloc" (click)="updatePosition()"></mat-slide-toggle>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <table class="table">
+          <tr *ngIf="setloc==true">
+            <td [ngStyle]="{'border':'none'}">Latitude</td>
+            <td [ngStyle]="{'border':'none'}">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="lat" [(ngModel)]="lat">
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr *ngIf="setloc==true">
+            <td [ngStyle]="{'border':'none'}">longitude</td>
+            <td [ngStyle]="{'border':'none'}">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="long" [(ngModel)]="long">
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr *ngIf="acc==false">
+            <td [ngStyle]="{'border':'none'}">Sort By</td>
+            <td [ngStyle]="{'border':'none'}">
+              <mat-select placeholder="Favorite food" [(ngModel)]="sortby" (change)="sortIt(sortby,lat)">
+                <mat-option *ngFor="let sort of sorts" [value]="sort">
+                  {{ sort}}
+                </mat-option>
+              </mat-select>
+            </td>
+          </tr>
+          <tr>
+            <td [ngStyle]="{'border':'none'}" width="180px"> </td>
+            <td [ngStyle]="{'border':'none'}">
+            <!--  <mat-slide-toggle [(ngModel)]="acc" (click)="accCheck(acc)"></mat-slide-toggle>
+                <mat-radio-group [(ngModel)]="acc" (click)="accCheck(acc)">
+<mat-radio-button value=true [ngStyle]="{'font-style': 'normal'}">Facebook</mat-radio-button>
+<mat-radio-button value=false>Google</mat-radio-button>
+</mat-radio-group>-->
+            </td>
+          </tr>
+
+        </table>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+  <br>
+  <p [ngStyle]="{'text-align': 'center','font-size':'small'}">{{message}}</p>
+  <mat-slider *ngIf="showradius==true"  [(ngModel)]="radius" max="100" min="1" [ngStyle]="{'width': '100%'}"></mat-slider>
+  <p  *ngIf="showradius==true"  [ngStyle]="{'text-align': 'center'}">{{radius +" KM"}} </p>
+
+  <p *ngIf="lat==null" [ngStyle]="{'text-align': 'center'}">Is location/GPS ON.</p>
+  <mat-progress-bar mode="query" *ngIf="spin==true"> </mat-progress-bar>
+  <div>
+    <mat-accordion *ngIf="dataFrom=='facebook'">
+      <mat-expansion-panel *ngFor="let res of result;let i = index;" (click)="showImages(i)">
+        <mat-expansion-panel-header (click)="showImages(i)" [ngStyle]="{'padding-left': '10px','padding-right':'10px'}">
+          <mat-panel-title (click)="showImages(i)">
+            <img [src]="res.picture.data.url" width="24px" height="24px" [ngStyle]="{'margin-right': '10px','border-radius':'12px'}" />
+            <p>{{res.name}}</p>
+          </mat-panel-title>
+
+          <mat-panel-description *ngIf="res.location.city!=''">
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-tab-group>
+          <mat-tab label="About"  *ngIf="res.about!=null||res.description!=null||res.photos!=null">
+            <ng-template mat-tab-label><i class="fa fa-info"></i></ng-template>
+            <br>
+            <div class="row">
+            <div class="col-md-7">
+            <div *ngIf="res.about!=null">
+              <b>About</b>
+              <!--<mat-divider></mat-divider> -->
+              <p>{{res.about}}</p>
+            </div>
+            <div *ngIf="res.description!=null">
+              <b>Description</b>
+              <!--<mat-divider></mat-divider> -->
+              <p>{{res.description}}</p>
+            </div>
+<br>
+</div>
+<div class="col-md-5" *ngIf="res.photos!=null">
+<div [id]="res.id"   class="carousel slide" data-ride="carousel" [ngStyle]="{'width': '100%','margin':'auto'}">
+  <ol class="carousel-indicators">
+    <li data-target="'#'+{res.id}" class="active"></li>
+    <li data-target="'#'+{res.id}" *ngFor="let hh of res.photos.data | slice:1;let o= index"></li>
+  </ol>
+  <div class="carousel-inner" role="listbox">
+    <div class="item active">
+      <img [id]='res.photos.data[0].id' width="80%" [ngStyle]="{'min-height': '100px'}" />
+    </div>
+    <div class="item" *ngFor="let each of res.photos.data | slice:1;">
+      <img [id]='each.id' width="80%" [ngStyle]="{'min-height': '100px'}" />
+    </div>
+  </div>
+  <a class="left carousel-control" [href]="'#'+res.id" role="button" data-slide="prev">
+<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+</a>
+  <a class="right carousel-control" [href]="'#'+res.id" role="button" data-slide="next">
+<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+</a>
+</div>
+<i hidden="true">{{i+1}}</i>
+</div>
+</div>
+
+          </mat-tab>
+          <mat-tab label="Restaurant" *ngIf="res.restaurant_services!=null">
+            <ng-template mat-tab-label><i class="fa fa-cutlery"></i></ng-template>
+            <br>
+            <div class="row">
+
+            <div class="col-sm-6" *ngIf="res.restaurant_specialties!=null">
+              <b [ngStyle]="{'display': 'block','text-align':'center'}">Specialties</b>
+              <table class="table" [ngStyle]="{'width': '80%','margin':'auto'}">
+                <tr *ngIf="res.restaurant_specialties.breakfast!=null">
+                  <td [ngStyle]="{'border':'none'}">Breakfast</td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_specialties.breakfast==1"><span class="glyphicon glyphicon-ok"></span></td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_specialties.breakfast==0"><span class="glyphicon glyphicon-remove"></span></td>
+                </tr>
+                <tr *ngIf="res.restaurant_specialties.coffee!=null">
+                  <td [ngStyle]="{'border':'none'}">Coffee</td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_specialties.coffee==1"><span class="glyphicon glyphicon-ok"></span></td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_specialties.coffee==0"><span class="glyphicon glyphicon-remove"></span></td>
+                </tr>
+                <tr *ngIf="res.restaurant_specialties.dinner!=null">
+                  <td [ngStyle]="{'border':'none'}">Dinner</td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_specialties.dinner==1"><span class="glyphicon glyphicon-ok"></span></td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_specialties.dinner==0"><span class="glyphicon glyphicon-remove"></span></td>
+                </tr>
+                <tr *ngIf="res.restaurant_specialties.drinks!=null">
+                  <td [ngStyle]="{'border':'none'}">Drinks</td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_specialties.drinks==1"><span class="glyphicon glyphicon-ok"></span></td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_specialties.drinks==0"><span class="glyphicon glyphicon-remove"></span></td>
+                </tr>
+                <tr *ngIf="res.restaurant_specialties.lunch!=null">
+                  <td [ngStyle]="{'border':'none'}">Lunch</td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_specialties.lunch==1"><span class="glyphicon glyphicon-ok"></span></td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_specialties.lunch==0"><span class="glyphicon glyphicon-remove"></span></td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-sm-6" *ngIf="res.restaurant_services!=null">
+              <b [ngStyle]="{'display': 'block','text-align':'center'}">Services</b>
+              <table class="table" [ngStyle]="{'width': '80%','margin':'auto'}">
+                <tr *ngIf="res.restaurant_services.delivery!=null">
+                  <td [ngStyle]="{'border':'none'}">Delivery</td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.delivery==true"><span class="glyphicon glyphicon-ok"></span></td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.delivery==false"><span class="glyphicon glyphicon-remove"></span></td>
+                </tr>
+                <tr *ngIf="res.restaurant_services.catering!=null">
+                  <td [ngStyle]="{'border':'none'}">Catering</td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.catering==true"><span class="glyphicon glyphicon-ok"></span></td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.catering==false"><span class="glyphicon glyphicon-remove"></span></td>
+                </tr>
+                <tr *ngIf="res.restaurant_services.kids!=null">
+                  <td [ngStyle]="{'border':'none'}">Kids</td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.kids==true"><span class="glyphicon glyphicon-ok"></span></td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.kids==false"><span class="glyphicon glyphicon-remove"></span></td>
+                </tr>
+                <tr *ngIf="res.restaurant_services.groups!=null">
+                  <td [ngStyle]="{'border':'none'}">Groups</td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.groups==true"><span class="glyphicon glyphicon-ok"></span></td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.groups==false"><span class="glyphicon glyphicon-remove"></span></td>
+                </tr>
+                <tr *ngIf="res.restaurant_services.outdoor!=null">
+                  <td [ngStyle]="{'border':'none'}">Outdoor</td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.outdoor==true"><span class="glyphicon glyphicon-ok"></span></td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.outdoor==false"><span class="glyphicon glyphicon-remove"></span></td>
+                </tr>
+                <tr *ngIf="res.restaurant_services.reserve!=null">
+                  <td [ngStyle]="{'border':'none'}">Reserve</td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.reserve==true"><span class="glyphicon glyphicon-ok"></span></td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.reserve==false"><span class="glyphicon glyphicon-remove"></span></td>
+                </tr>
+                <tr *ngIf="res.restaurant_services.takeout!=null">
+                  <td [ngStyle]="{'border':'none'}">Takeout</td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.takeout==true"><span class="glyphicon glyphicon-ok"></span></td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.takeout==false"><span class="glyphicon glyphicon-remove"></span></td>
+                </tr>
+                <tr *ngIf="res.restaurant_services.waiter!=null">
+                  <td [ngStyle]="{'border':'none'}">Waiter</td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.waiter==true"><span class="glyphicon glyphicon-ok"></span></td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.waiter==false"><span class="glyphicon glyphicon-remove"></span></td>
+                </tr>
+                <tr *ngIf="res.restaurant_services.walkins!=null">
+                  <td [ngStyle]="{'border':'none'}">Walkins</td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.walkins==true"><span class="glyphicon glyphicon-ok"></span></td>
+                  <td [ngStyle]="{'border':'none','text-align':'end'}" *ngIf="res.restaurant_services.walkins==false"><span class="glyphicon glyphicon-remove"></span></td>
+                </tr>
+              </table>
+            </div></div>
+          </mat-tab>
+          <mat-tab label="Contact" *ngIf="res.phone!=null">
+            <ng-template mat-tab-label><i class="fa fa-phone"></i></ng-template>
+            <br>
+            <div *ngIf="res.phone!=null">
+              <b>Phone</b>
+              <!--<mat-divider></mat-divider> -->
+              <p><a [href]="'tel:'+res.phone">{{res.phone}}
+              <span class="glyphicon glyphicon-earphone"></span>
+              </a>
+              </p>
+            </div>
+            <div *ngIf="res.website!=null">
+              <b>Website</b>
+              <!--<mat-divider></mat-divider> -->
+              <div [innerHTML]="websitesList(res.website)"></div>
+
+            </div>
+          </mat-tab>
+          <mat-tab label="Address">
+            <ng-template mat-tab-label><i class="fa fa-map-marker"></i></ng-template>
+
+            <br>
+            <div *ngIf="res.location.city!=null">
+              <b>City</b>
+              <!--<mat-divider></mat-divider> -->
+              <p *ngIf="res.location.city!=null">{{res.location.city}}</p>
+            </div>
+            <div *ngIf="res.location.street!=null">
+              <b>Street</b>
+              <!--<mat-divider></mat-divider> -->
+              <p *ngIf="res.location.street!=null">{{res.location.street}}</p>
+            </div>
+
+            <div *ngIf="res.location.latitude!=null">
+              <b>Location</b>
+              <!--<mat-divider></mat-divider> -->
+              <p *ngIf="res.location.latitude!=null">{{res.location.latitude}},{{res.location.longitude}}</p>
+            </div>
+            <br>
+            <div [ngStyle]="{'text-align': 'center'}">
+              <button [ngStyle]="{'text-align': 'center'}" *ngIf="res.location!=null" mat-raised-button color="primary" (click)="naviagteTo(res.location.latitude,res.location.longitude)">Navigate</button>
+            </div>
+          </mat-tab>
+
+      <!--    <mat-tab label="Photos" *ngIf="res.photos!=null">
+            <ng-template mat-tab-label><i class="fa fa-camera-retro"></i></ng-template>
+
+            <br>
+            <div>
+              <div [id]="res.id"  *ngIf="res.photos!=null" class="carousel slide" data-ride="carousel" [ngStyle]="{'width': '70%','margin':'auto'}">
+                <ol class="carousel-indicators">
+                  <li data-target="'#'+{res.id}" class="active"></li>
+                  <li data-target="'#'+{res.id}" *ngFor="let hh of res.photos.data | slice:1;let o= index"></li>
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                  <div class="item active">
+                    <img [id]='res.photos.data[0].id' width="80%" [ngStyle]="{'min-height': '100px'}" />
+                  </div>
+                  <div class="item" *ngFor="let each of res.photos.data | slice:1;">
+                    <img [id]='each.id' width="80%" [ngStyle]="{'min-height': '100px'}" />
+                  </div>
+                </div>
+                <a class="left carousel-control" [href]="'#'+res.id" role="button" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        </a>
+                <a class="right carousel-control" [href]="'#'+res.id" role="button" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        </a>
+              </div>
+              <i hidden="true">{{i+1}}</i>
+            </div>
+          </mat-tab> -->
+
+        </mat-tab-group>
+        <br>
+        <mat-divider></mat-divider>
+
+        <br>
+        <div class="row" [ngStyle]="{'display': 'flex'}">
+          <div [ngStyle]="{'display': 'block','text-align':'center','width': '32%'}">
+            <div><i class="fa fa-thumbs-up" [ngStyle]="{'padding-right': '5px'}"></i>{{res.engagement.count}}</div>
+          </div>
+          <div [ngStyle]="{'display': 'block','width': '32%','text-align':'center'}">
+            <div><i class="fa fa-map-marker"  [ngStyle]="{'padding-right': '5px'}"></i>{{res.checkins}}</div>
+          </div>
+          <div [ngStyle]="{'width': '36%'}">
+            <div [ngStyle]="{'display': 'block','text-align':'center'}">
+            <i class="fa fa-star" *ngIf="res.overall_star_rating>=1"></i>
+            <i class="fa fa-star" *ngIf="res.overall_star_rating>=2"></i>
+            <i class="fa fa-star" *ngIf="res.overall_star_rating>=3"></i>
+            <i class="fa fa-star" *ngIf="res.overall_star_rating>=4"></i>
+            <i class="fa fa-star" *ngIf="res.overall_star_rating>=5"></i>
+          </div>
+          </div>
+        </div>
+        <!--
+      <div>
+        <div class="row">
+          <div class="col-md-6">
+            <p *ngIf="res.about!=null">About: {{res.about}}</p>
+            <p>Checkins: {{res.checkins}}</p>
+            <p *ngIf="res.description!=null" [id]="res.id+'xx'" [ngStyle]="{'height': '100px','overflow':'auto'}">Description: {{res.description}}
+            </p>
+            <div *ngIf="res.description!=null">
+              <button [ngStyle]="{'display': 'block','margin-left': 'auto','margin-right': 'auto'}" mat-raised-button *ngIf="(res.description.length>500)&&show==true" (click)="readMore(res.id+'xx')">More</button>
+              <button [ngStyle]="{'display': 'block','margin-left': 'auto','margin-right': 'auto'}" mat-raised-button *ngIf="(res.description.length>500)&&show==false" (click)="readLess(res.id+'xx')">Less</button>
+            </div>
+            <p *ngIf="res.overall_star_rating!=null">Rating: {{res.overall_star_rating}}</p>
+            <p *ngIf="res.phone!=null">Phone: <a [href]="'tel:'+res.phone">{{res.phone}}
+          <span class="glyphicon glyphicon-earphone"></span>
+        </a>
+            </p>
+            <p *ngIf="res.location.city!=null">City: {{res.location.city}}</p>
+            <p *ngIf="res.location.street!=null">Street: {{res.location.street}}</p>
+            <p *ngIf="res.location!=null">Location: {{res.location.latitude}},{{res.location.longitude}} </p>
+            <button *ngIf="res.location!=null" mat-raised-button color="primary" (click)="naviagteTo(res.location.latitude,res.location.longitude)">Navigate</button>
+            <br>
+            <br>
+          </div>
+          <div class="col-md-6">
+            <div *ngIf="res.photos!=null">
+              <div [id]="res.id" class="carousel slide" data-ride="carousel" [ngStyle]="{'width': '70%','margin':'auto'}">
+                <ol class="carousel-indicators">
+                  <li data-target="'#'+{res.id}" class="active"></li>
+                  <li data-target="'#'+{res.id}" *ngFor="let hh of res.photos.data | slice:1;let o= index"></li>
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                  <div class="item active">
+                    <img [id]='res.photos.data[0].id' width="80%" [ngStyle]="{'min-height': '100px'}" />
+                  </div>
+                  <div class="item" *ngFor="let each of res.photos.data | slice:1;">
+                    <img [id]='each.id' width="80%" [ngStyle]="{'min-height': '100px'}" />
+                  </div>
+                </div>
+                <a class="left carousel-control" [href]="'#'+res.id" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+          </a>
+                <a class="right carousel-control" [href]="'#'+res.id" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+          </a>
+              </div>
+              <p hidden="true">{{i+1}}</p>
+            </div>
+          </div>
+        </div>
+        <p *ngIf="res.single_line_address!=null">Address: {{res.single_line_address}}</p>
+      </div> -->
+      </mat-expansion-panel>
+      <button mat-mini-fab [ngStyle]="{'margin': 'auto','display':'block','margin-top':'10px'}"  *ngIf="paging!=null" (click)="gotoNext(paging)">+</button>
+    </mat-accordion>
+
+
+
+
+
+    <mat-accordion *ngIf="dataFrom=='google'">
+      <mat-expansion-panel *ngFor="let res of result2;let i = index;">
+        <mat-expansion-panel-header *ngIf="res.photos!=null" (click)="showImages2(res.id,res.photos[0].photo_reference)">
+          <mat-panel-title><img [src]="res.icon" width="24px" height="24px" [ngStyle]="{'margin-right': '10px'}" /> {{res.name}}
+          </mat-panel-title>
+          <mat-panel-description [ngStyle]="{'position':'absolute','right':'50px'}">
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-expansion-panel-header *ngIf="res.photos==null">
+          <mat-panel-title><img [src]="res.icon" width="24px" height="24px" [ngStyle]="{'margin-right': '10px'}" /> {{res.name}}
+          </mat-panel-title>
+          <mat-panel-description [ngStyle]="{'position':'absolute','right':'50px'}">
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div>
+          <div class="row">
+            <div class="col-md-6" [ngStyle]="{'text-align': 'center'}">
+              <p *ngIf="res.rating!=null">Rating: {{res.rating}} </p>
+              <p *ngIf="res.opening_hours!=null">Open Now: {{res.opening_hours.open_now}} </p>
+              <p *ngIf="res.vicinity!=null">Vicinity: {{res.vicinity}} </p>
+              <button [ngStyle]="{'text-align': 'center'}" *ngIf="res.geometry!=null" mat-raised-button color="primary" (click)="naviagteTo(res.geometry.location.lat,res.geometry.location.lng)">Navigate</button>
+              <br><br>
+            </div>
+            <div class="col-md-6">
+              <img [id]="res.id" [ngStyle]="{'width': '70%','margin':'auto','display':'block'}" />
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+      <button mat-mini-fab [ngStyle]="{'margin': 'auto','display':'block','margin-top':'10px'}" *ngIf="paging!=null" (click)="gotoNext2(paging)">+</button>
+
+    </mat-accordion>
+  </div>
+  <br>
+  <br>
+  <br>
+</div>
+<!--<mat-toolbar [ngStyle]="{'box-shadow':'0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)','position': 'fixed', 'right':' 0', 'left':' 0','bottom':'0', 'z-index': '1030'}">
+  <h1 [ngStyle]="{'margin': 'auto','display':'block','font-family': 'Sofia','font-size':'22px'}">Places</h1>
+</mat-toolbar>-->
