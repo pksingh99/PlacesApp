@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-place-type',
@@ -12,7 +13,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class PlaceTypeComponent implements OnInit {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,public snackBar: MatSnackBar) { }
 
   myControl: FormControl = new FormControl();
   selected: any = "";
@@ -92,6 +93,7 @@ setType(str){
       }
       else {
         this.message = "Please wait while we get your current coordinates";
+        this.openSnackBar(this.message,"");
       }
     }
     else {
@@ -99,6 +101,12 @@ setType(str){
     }
 
   }
+
+  openSnackBar(message: string, action: string) {
+  this.snackBar.open(message, action, {
+    duration: 2000,
+  });
+}
   //https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&key=YOUR_API_KEY
   //https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=CmRaAAAA2Wlb0YpiPg9nfO3xj2OKg6vpteGgmDcZQmeJ8XTVi4Crgp0VIb0EerQS0p9lJoSGTV7GKqHxstE-1lb0fXYmfUUwQ92wfDbF6tpnlRY68Sw4BK0a3fQKIO4BeBJ0PPesEhAjbrA1oCaoaot2MmkpITl-GhQnGrgkZpz07bPbkPxIpGE2Qh9iUA&key=AIzaSyAXeuPblW5FFpupnbNPG-MTbfGxgpzaH1A
   //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=15.533414,73.764954&radius=20000&type=airport&keyword=airport&key=AIzaSyAXeuPblW5FFpupnbNPG-MTbfGxgpzaH1A
@@ -124,7 +132,7 @@ setType(str){
   search2(str) {
 
     this.updatePosition();
-    
+
     str = str.replace(/\s+/g, '_').toLowerCase();
     this.spin = true;
     this.meter = null;
@@ -142,6 +150,7 @@ setType(str){
     else {
       tp = str;
     }
+     tp = tp.replace("_", "");
 
     //this.http.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=15.533414,73.764954&radius=20000&type=restaurant&keyword=&key=AIzaSyAXeuPblW5FFpupnbNPG-MTbfGxgpzaH1A').subscribe(data => {
     // this.http.get('http://silkemporiumgoa.com/map/map.php?type='+this.type+'&keyword='+this.keyword+'&long='+this.long+'&lat='+this.lat+'&radius='+this.meter).subscribe(data => {
@@ -153,9 +162,15 @@ setType(str){
 
       if (data['status'] == "ZERO_RESULTS") {
         this.message = "No Result Found. Try Changing search radius or keyword";
+        this.showradius=true;
+        this.openSnackBar(this.message,"");
+
+
       }else{
         this.message="Showing "+this.result2.length+" Results Within "+this.radius+" KM of Radius via Google Search";
         this.showradius=false;
+        this.openSnackBar(this.message,"");
+
       }
     });
   }
@@ -219,10 +234,12 @@ return reso;
     this.http.get('https://graph.facebook.com/v2.11/search?type=place&q=' + tp + '&center=' + this.lat + ',' + this.long + '&distance=' + this.meter + '&fields=' + this.facebookFields + '&access_token=' + this.access_token).subscribe(data => {
       this.result = data['data'];
       this.paging=null;
-
+console.log("this.result.length"+this.result.length);
       if (this.result.length==0){
         this.message="No Result Found Within "+this.radius+" KM of Radius";
         this.showradius=true;
+        this.openSnackBar(this.message,"");
+
       }
     else{
 
@@ -250,10 +267,15 @@ return reso;
           if(this.debug==true){console.log("Kept" + this.result[i].location.longitude + "," + this.result[i].location.latitude);}
         }
       }
-      if (this.result.length <=1 ) {
+      if (this.result.length >=1 ) {
 
       this.message="Showing "+this.result.length+" Results Within "+this.radius+" KM of Radius via Facebook Search";
             this.showradius=false;
+            this.openSnackBar(this.message,"");
+
+          }
+          else{
+
           }
       if (this.sortby == "Rating") {
         this.result.sort(function(a, b) { return b.overall_star_rating - a.overall_star_rating });
@@ -292,9 +314,15 @@ return reso;
 
       if (data['status'] == "ZERO_RESULTS") {
         this.message="<p>No Result Found Within "+this.radius+" KM of Radius</p><br><p>Increase the search radius and try again</p>";
+        this.showradius=true;
+        this.openSnackBar(this.message,"");
+
+
       }else{
         this.message="Showing "+this.result2.length+" Results Within "+this.radius+" KM of Radius via Google Search";
         this.showradius=false;
+        this.openSnackBar(this.message,"");
+
 
       }
     });
@@ -327,10 +355,19 @@ return reso;
       }
       this.result = this.result.concat(this.resultint);
       this.message="Showing "+this.result.length+" Results Within "+this.radius+" KM of Radius via Facebook Search";
+      this.showradius=true;
+      this.openSnackBar(this.message,"");
+
 
       if(this.debug==true){console.log(this.result);}
       if (data['status'] == "ZERO_RESULTS") {
         this.message = "No Result Found. Try Changing search radius or keyword";
+        this.showradius=true;
+        this.openSnackBar(this.message,"");
+
+      }else{
+        this.showradius=false;
+
       }
     });
     if(this.debug==true){console.log(str);}
@@ -376,7 +413,7 @@ return reso;
   }
 
 
-  public options = ['Nearby Places', 'Restaurant', 'Cafe', 'ATM', 'Beaches', 'Petrol Pump', 'Police', 'art_gallery', 'atm', 'bakery', 'bank', 'bar', 'beauty_salon', 'bicycle_store', 'book_store', 'bowling_alley', 'bus_station', 'cafe', 'campground', 'car_dealer', 'car_rental', 'car_repair', 'car_wash', 'casino', 'cemetery', 'church', 'city_hall', 'clothing_store', 'convenience_store', 'courthouse', 'dentist', 'department_store', 'doctor', 'electrician', 'electronics_store', 'embassy', 'fire_station', 'florist', 'funeral_home', 'furniture_store', 'gas_station', 'gym', 'hair_care', 'hardware_store', 'hindu_temple', 'home_goods_store', 'hospital', 'insurance_agency', 'jewelry_store', 'laundry', 'lawyer', 'library', 'liquor_store', 'local_government_office', 'locksmith', 'lodging', 'meal_delivery', 'meal_takeaway', 'mosque', 'movie_rental', 'movie_theater', 'moving_company', 'museum', 'night_club', 'painter', 'park', 'parking', 'pet_store', 'pharmacy', 'physiotherapist', 'plumber', 'police', 'post_office', 'real_estate_agency', 'restaurant', 'roofing_contractor', 'rv_park', 'school', 'shoe_store', 'shopping_mall', 'spa', 'stadium', 'storage', 'store', 'subway_station', 'supermarket', 'synagogue', 'taxi_stand', 'train_station', 'transit_station', 'travel_agency', 'veterinary_care', 'zoo'];
+  public options = ['Nearby Places', 'Restaurant', 'Cafe', 'ATM', 'Beaches', 'Petrol Pump', 'Police', 'art_gallery', 'bakery', 'bank', 'bar', 'beauty_salon', 'bicycle_store', 'book_store', 'bowling_alley', 'bus_station', 'campground', 'car_dealer', 'car_rental', 'car_repair', 'car_wash', 'casino', 'cemetery', 'church', 'city_hall', 'clothing_store', 'convenience_store', 'courthouse', 'dentist', 'department_store', 'doctor', 'electrician', 'electronics_store', 'embassy', 'fire_station', 'florist', 'funeral_home', 'furniture_store', 'gas_station', 'gym', 'hair_care', 'hardware_store', 'hindu_temple', 'home_goods_store', 'hospital', 'insurance_agency', 'jewelry_store', 'laundry', 'lawyer', 'library', 'liquor_store', 'local_government_office', 'locksmith', 'lodging', 'meal_delivery', 'meal_takeaway', 'mosque', 'movie_rental', 'movie_theater', 'moving_company', 'museum', 'night_club', 'painter', 'park', 'parking', 'pet_store', 'pharmacy', 'physiotherapist', 'plumber', 'post_office', 'real_estate_agency', 'roofing_contractor', 'rv_park', 'school', 'shoe_store', 'shopping_mall', 'spa', 'stadium', 'storage', 'store', 'subway_station', 'supermarket', 'synagogue', 'taxi_stand', 'train_station', 'transit_station', 'travel_agency', 'veterinary_care', 'zoo'];
 
 
 
@@ -436,6 +473,8 @@ let url = new URL(url_string);
       navigator.geolocation.getCurrentPosition(this.showPosition);
       if(this.debug==true){console.log("geo location");}
       this.message = "getting latitude longitude";
+      this.openSnackBar(this.message,"");
+
     } else {
     }
   }

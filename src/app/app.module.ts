@@ -24,6 +24,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome'
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import 'hammerjs';
 
@@ -36,7 +37,7 @@ import { PlaceTypeComponent } from './place-type/place-type.component';
     AppComponent,
     PlaceTypeComponent
   ],
-  imports: [MatListModule,MatSidenavModule,MatIconModule,MatTooltipModule,MatToolbarModule,MatTabsModule,MatProgressBarModule,MatDividerModule,
+  imports: [MatListModule,MatSidenavModule,MatIconModule,MatTooltipModule,MatToolbarModule,MatTabsModule,MatProgressBarModule,MatDividerModule,MatSnackBarModule,
     BrowserModule,BrowserAnimationsModule,MatAutocompleteModule,FormsModule,HttpModule,MatInputModule,ReactiveFormsModule,MatButtonModule,HttpClientModule,
     MatExpansionModule,MatSliderModule,MatStepperModule,MatSlideToggleModule,MatProgressSpinnerModule,MatSelectModule,MatRadioModule,Angular2FontawesomeModule,MatButtonToggleModule
   ],

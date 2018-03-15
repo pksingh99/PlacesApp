@@ -12,15 +12,16 @@
     <p>I am sidenav</p>
   </mat-sidenav>
 </mat-sidenav-container> -->
-<div class="container">
+
 <mat-toolbar [ngStyle]="{'background':'red','box-shadow':'0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)','position': 'fixed', 'right':' 0', 'left':' 0', 'z-index': '1030'}">
   <h1 [ngStyle]="{'margin': 'auto','display':'block','font-family': 'Sofia','font-size':'22px','color':'white'}">Places</h1></mat-toolbar>
 <br>
 <br>
 <br>
-<br>
+<mat-progress-bar mode="query" *ngIf="spin==true"> </mat-progress-bar>
+
 <mat-tab-group (selectChange)="setType($event)">
-  <mat-tab label="Restaurant"> <ng-template mat-tab-label><i class="fa fa-cutlery"></i></ng-template></mat-tab>
+<!--  <mat-tab label="Restaurant"> <ng-template mat-tab-label><i class="fa fa-cutlery"></i></ng-template></mat-tab>
   <mat-tab label="cafe"> <ng-template mat-tab-label><i class="fa fa-coffee"></i></ng-template></mat-tab>
   <mat-tab label="mall"> <ng-template mat-tab-label><i class="fa fa-shopping-bag"></i></ng-template></mat-tab>
   <mat-tab label="pharmacy"> <ng-template mat-tab-label><i class="fa fa-medkit"></i></ng-template></mat-tab>
@@ -32,11 +33,11 @@
   <mat-tab label="book"> <ng-template mat-tab-label><i class="fa fa-book"></i></ng-template></mat-tab>
   <mat-tab label="art_gallery"> <ng-template mat-tab-label><i class="fa fa-paint-brush"></i></ng-template></mat-tab>
   <mat-tab label="hospital"> <ng-template mat-tab-label><i class="fa fa-hospital"></i></ng-template></mat-tab>
-  <mat-tab label="ambulance"> <ng-template mat-tab-label><i class="fa fa-ambulance"></i></ng-template></mat-tab>
+  <mat-tab label="ambulance"> <ng-template mat-tab-label><i class="fa fa-ambulance"></i></ng-template></mat-tab> -->
 
   <mat-tab [label]="search" *ngFor="let search of options"></mat-tab>
 </mat-tab-group>
-
+<div class="container">
 
   <!--<p [ngStyle]="{'margin': 'auto','display':'block'}">Nearby</p>
   <div class="row" [ngStyle]="{'width': '100%'}">
@@ -49,10 +50,7 @@
     </div>
   </div>-->
 
-
-
-  <br>
-  <div class="row">
+  <div class="row" [ngStyle]="{'margin-top': '10px','margin-bottom':'10px'}">
     <div class="col-sm-8">
 
       <form class="example-form">
@@ -71,12 +69,12 @@
     <div class="col-sm-4">
     <!--  <button [disabled]="enable" [ngStyle]="{'width': '100%'}" mat-raised-button color="primary" (click)="enableSearch(type)">-->
 <div [ngStyle]="{'display': 'flex'}">
-  <button [disabled]="enable" [ngStyle]="{'width': '50%','margin-right':'10px'}" mat-raised-button  (click)="a=false;accCheck(true)">
+  <button [disabled]="enable" [ngStyle]="{'width': '50%','margin-right':'10px','color':'white'}"  color="warn" mat-raised-button  (click)="a=false;accCheck(true)">
     <span class="fa fa-facebook"></span>
 
   <span class="glyphicon glyphicon-search" *ngIf="a==false"></span>
   </button>
-    <button [disabled]="enable" [ngStyle]="{'width': '50%'}" mat-raised-button  (click)="a=true;accCheck(false)">
+    <button [disabled]="enable" [ngStyle]="{'width': '50%','color':'white'}" color="warn" mat-raised-button  (click)="a=true;accCheck(false)">
       <span class="fa fa-google"></span>
 
     <span class="glyphicon glyphicon-search"  *ngIf="a==true"></span>
@@ -101,101 +99,15 @@
 </mat-form-field>
 <mat-slider (change)="enableSearch(type)" [(ngModel)]="radius" max="20" min="1" [ngStyle]="{'width': '100%'}"></mat-slider> -->
 
-<br>
-<mat-accordion [ngStyle]="{'box-shadow':'0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)'}">
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <span class="glyphicon glyphicon-menu-hamburger"></span>
-    </mat-expansion-panel-header>
+<!--  <p [ngStyle]="{'text-align': 'center','font-size':'small','margin':'15px'}">{{message}}</p> -->
 
-    <div class="row">
-      <div class="col-md-6">
-        <table class="table" [ngStyle]="{'margin-bottom': '0px'}">
-          <tr>
-            <td [ngStyle]="{'border':'none','width':'180px'}" width="180px">Search Within </td>
-            <td [ngStyle]="{'border':'none'}">
-              <mat-form-field class="example-full-width" [ngStyle]="{'width': '50%','top':'-20px','height':'20px'}">
-                <input matInput [ngStyle]="{'text-align': 'center'}" (ngModelChange)="enableSearch(type)" [(ngModel)]="radius">
-              </mat-form-field>
-
-            </td>
-          </tr>
-          <tr>
-            <td [ngStyle]="{'border':'none'}">Your location</td>
-            <td [ngStyle]="{'border':'none'}">
-              <p *ngIf="lat==null" (click)="getLocation()">
-                Getting your current location.
-              </p>
-              <p *ngIf="lat!=null" [ngStyle]="{'text-align': 'start'}">
-                {{showShortCoord(lat,long)}}
-                <span class="glyphicon glyphicon-repeat" *ngIf="upon==false" (click)="updatePosition()"></span>
-                <span class="glyphicon glyphicon-refresh" *ngIf="upon==true"></span>
-              </p>
-
-            </td>
-          </tr>
-          <tr>
-            <td [ngStyle]="{'border':'none'}">Set Location</td>
-            <td [ngStyle]="{'border':'none'}">
-          <mat-slide-toggle [(ngModel)]="setloc" (click)="updatePosition()"></mat-slide-toggle>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="col-md-6">
-        <table class="table">
-          <tr *ngIf="setloc==true">
-            <td [ngStyle]="{'border':'none'}">Latitude</td>
-            <td [ngStyle]="{'border':'none'}">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="lat" [(ngModel)]="lat">
-              </mat-form-field>
-            </td>
-          </tr>
-          <tr *ngIf="setloc==true">
-            <td [ngStyle]="{'border':'none'}">longitude</td>
-            <td [ngStyle]="{'border':'none'}">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="long" [(ngModel)]="long">
-              </mat-form-field>
-            </td>
-          </tr>
-          <tr *ngIf="acc==false">
-            <td [ngStyle]="{'border':'none'}">Sort By</td>
-            <td [ngStyle]="{'border':'none'}">
-              <mat-select placeholder="Favorite food" [(ngModel)]="sortby" (change)="sortIt(sortby,lat)">
-                <mat-option *ngFor="let sort of sorts" [value]="sort">
-                  {{ sort}}
-                </mat-option>
-              </mat-select>
-            </td>
-          </tr>
-          <tr>
-            <td [ngStyle]="{'border':'none'}" width="180px"> </td>
-            <td [ngStyle]="{'border':'none'}">
-            <!--  <mat-slide-toggle [(ngModel)]="acc" (click)="accCheck(acc)"></mat-slide-toggle>
-                <mat-radio-group [(ngModel)]="acc" (click)="accCheck(acc)">
-<mat-radio-button value=true [ngStyle]="{'font-style': 'normal'}">Facebook</mat-radio-button>
-<mat-radio-button value=false>Google</mat-radio-button>
-</mat-radio-group>-->
-            </td>
-          </tr>
-
-        </table>
-      </div>
-    </div>
-  </mat-expansion-panel>
-</mat-accordion>
-  <br>
-  <p [ngStyle]="{'text-align': 'center','font-size':'small'}">{{message}}</p>
   <mat-slider *ngIf="showradius==true"  [(ngModel)]="radius" max="100" min="1" [ngStyle]="{'width': '100%'}"></mat-slider>
   <p  *ngIf="showradius==true"  [ngStyle]="{'text-align': 'center'}">{{radius +" KM"}} </p>
 
   <p *ngIf="lat==null" [ngStyle]="{'text-align': 'center'}">Is location/GPS ON.</p>
-  <mat-progress-bar mode="query" *ngIf="spin==true"> </mat-progress-bar>
   <div>
     <mat-accordion *ngIf="dataFrom=='facebook'">
-      <mat-expansion-panel *ngFor="let res of result;let i = index;" (click)="showImages(i)">
+      <mat-expansion-panel *ngFor="let res of result;let i = index;" (click)="showImages(i)" [ngStyle]="{'margin-bottom':'5px','margin-top':'5px'}">
         <mat-expansion-panel-header (click)="showImages(i)" [ngStyle]="{'padding-left': '10px','padding-right':'10px'}">
           <mat-panel-title (click)="showImages(i)">
             <img [src]="res.picture.data.url" width="24px" height="24px" [ngStyle]="{'margin-right': '10px','border-radius':'12px'}" />
@@ -207,6 +119,31 @@
         </mat-expansion-panel-header>
 
         <mat-tab-group>
+          <mat-tab label="Address">
+            <ng-template mat-tab-label><i class="fa fa-map-marker"></i></ng-template>
+
+            <br>
+            <div *ngIf="res.location.city!=null">
+              <b>City</b>
+              <!--<mat-divider></mat-divider> -->
+              <p *ngIf="res.location.city!=null">{{res.location.city}}</p>
+            </div>
+            <div *ngIf="res.location.street!=null">
+              <b>Street</b>
+              <!--<mat-divider></mat-divider> -->
+              <p *ngIf="res.location.street!=null">{{res.location.street}}</p>
+            </div>
+
+            <div *ngIf="res.location.latitude!=null">
+              <b>Location</b>
+              <!--<mat-divider></mat-divider> -->
+              <p *ngIf="res.location.latitude!=null">{{res.location.latitude}},{{res.location.longitude}}</p>
+            </div>
+            <br>
+            <div [ngStyle]="{'text-align': 'center'}">
+              <button [ngStyle]="{'text-align': 'center'}" *ngIf="res.location!=null" mat-raised-button color="warn" (click)="naviagteTo(res.location.latitude,res.location.longitude)">Navigate</button>
+            </div>
+          </mat-tab>
           <mat-tab label="About"  *ngIf="res.about!=null||res.description!=null||res.photos!=null">
             <ng-template mat-tab-label><i class="fa fa-info"></i></ng-template>
             <br>
@@ -354,31 +291,7 @@
 
             </div>
           </mat-tab>
-          <mat-tab label="Address">
-            <ng-template mat-tab-label><i class="fa fa-map-marker"></i></ng-template>
 
-            <br>
-            <div *ngIf="res.location.city!=null">
-              <b>City</b>
-              <!--<mat-divider></mat-divider> -->
-              <p *ngIf="res.location.city!=null">{{res.location.city}}</p>
-            </div>
-            <div *ngIf="res.location.street!=null">
-              <b>Street</b>
-              <!--<mat-divider></mat-divider> -->
-              <p *ngIf="res.location.street!=null">{{res.location.street}}</p>
-            </div>
-
-            <div *ngIf="res.location.latitude!=null">
-              <b>Location</b>
-              <!--<mat-divider></mat-divider> -->
-              <p *ngIf="res.location.latitude!=null">{{res.location.latitude}},{{res.location.longitude}}</p>
-            </div>
-            <br>
-            <div [ngStyle]="{'text-align': 'center'}">
-              <button [ngStyle]="{'text-align': 'center'}" *ngIf="res.location!=null" mat-raised-button color="primary" (click)="naviagteTo(res.location.latitude,res.location.longitude)">Navigate</button>
-            </div>
-          </mat-tab>
 
       <!--    <mat-tab label="Photos" *ngIf="res.photos!=null">
             <ng-template mat-tab-label><i class="fa fa-camera-retro"></i></ng-template>
@@ -484,7 +397,7 @@
         <p *ngIf="res.single_line_address!=null">Address: {{res.single_line_address}}</p>
       </div> -->
       </mat-expansion-panel>
-      <button mat-mini-fab [ngStyle]="{'margin': 'auto','display':'block','margin-top':'10px'}"  *ngIf="paging!=null" (click)="gotoNext(paging)">+</button>
+      <button mat-mini-fab color="warn" [ngStyle]="{'margin': 'auto','display':'block','margin-top':'10px'}"  *ngIf="paging!=null" (click)="gotoNext(paging)">+</button>
     </mat-accordion>
 
 
@@ -492,7 +405,7 @@
 
 
     <mat-accordion *ngIf="dataFrom=='google'">
-      <mat-expansion-panel *ngFor="let res of result2;let i = index;">
+      <mat-expansion-panel *ngFor="let res of result2;let i = index;" [ngStyle]="{'margin-bottom':'5px','margin-top':'5px'}">
         <mat-expansion-panel-header *ngIf="res.photos!=null" (click)="showImages2(res.id,res.photos[0].photo_reference)">
           <mat-panel-title><img [src]="res.icon" width="24px" height="24px" [ngStyle]="{'margin-right': '10px'}" /> {{res.name}}
           </mat-panel-title>
@@ -511,7 +424,7 @@
               <p *ngIf="res.rating!=null">Rating: {{res.rating}} </p>
               <p *ngIf="res.opening_hours!=null">Open Now: {{res.opening_hours.open_now}} </p>
               <p *ngIf="res.vicinity!=null">Vicinity: {{res.vicinity}} </p>
-              <button [ngStyle]="{'text-align': 'center'}" *ngIf="res.geometry!=null" mat-raised-button color="primary" (click)="naviagteTo(res.geometry.location.lat,res.geometry.location.lng)">Navigate</button>
+              <button [ngStyle]="{'text-align': 'center'}" *ngIf="res.geometry!=null" mat-raised-button color="warn" (click)="naviagteTo(res.geometry.location.lat,res.geometry.location.lng)">Navigate</button>
               <br><br>
             </div>
             <div class="col-md-6">
@@ -520,13 +433,95 @@
           </div>
         </div>
       </mat-expansion-panel>
-      <button mat-mini-fab [ngStyle]="{'margin': 'auto','display':'block','margin-top':'10px'}" *ngIf="paging!=null" (click)="gotoNext2(paging)">+</button>
+      <button mat-mini-fab color="warn" [ngStyle]="{'margin': 'auto','display':'block','margin-top':'10px'}" *ngIf="paging!=null" (click)="gotoNext2(paging)">+</button>
 
     </mat-accordion>
   </div>
   <br>
-  <br>
-  <br>
+  <mat-accordion [ngStyle]="{'box-shadow':'0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)'}">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <span class="glyphicon glyphicon-menu-hamburger"></span>
+      </mat-expansion-panel-header>
+
+      <div class="row">
+        <div class="col-md-6">
+          <table class="table" [ngStyle]="{'margin-bottom': '0px'}">
+            <tr>
+              <td [ngStyle]="{'border':'none','width':'180px'}" width="180px">Search Within </td>
+              <td [ngStyle]="{'border':'none'}">
+                <mat-form-field class="example-full-width" [ngStyle]="{'width': '50%','top':'-20px','height':'20px'}">
+                  <input matInput [ngStyle]="{'text-align': 'center'}" (ngModelChange)="enableSearch(type)" [(ngModel)]="radius">
+                </mat-form-field>
+
+              </td>
+            </tr>
+            <tr>
+              <td [ngStyle]="{'border':'none'}">Your location</td>
+              <td [ngStyle]="{'border':'none'}">
+                <p *ngIf="lat==null" (click)="getLocation()">
+                  Getting your current location.
+                </p>
+                <p *ngIf="lat!=null" [ngStyle]="{'text-align': 'start'}">
+                  {{showShortCoord(lat,long)}}
+                  <span class="glyphicon glyphicon-repeat" *ngIf="upon==false" (click)="updatePosition()"></span>
+                  <span class="glyphicon glyphicon-refresh" *ngIf="upon==true"></span>
+                </p>
+
+              </td>
+            </tr>
+            <tr>
+              <td [ngStyle]="{'border':'none'}">Set Location</td>
+              <td [ngStyle]="{'border':'none'}">
+            <mat-slide-toggle [(ngModel)]="setloc" (click)="updatePosition()"></mat-slide-toggle>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="col-md-6">
+          <table class="table">
+            <tr *ngIf="setloc==true">
+              <td [ngStyle]="{'border':'none'}">Latitude</td>
+              <td [ngStyle]="{'border':'none'}">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="lat" [(ngModel)]="lat">
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr *ngIf="setloc==true">
+              <td [ngStyle]="{'border':'none'}">longitude</td>
+              <td [ngStyle]="{'border':'none'}">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="long" [(ngModel)]="long">
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr *ngIf="acc==false">
+              <td [ngStyle]="{'border':'none'}">Sort By</td>
+              <td [ngStyle]="{'border':'none'}">
+                <mat-select placeholder="Favorite food" [(ngModel)]="sortby" (change)="sortIt(sortby,lat)">
+                  <mat-option *ngFor="let sort of sorts" [value]="sort">
+                    {{ sort}}
+                  </mat-option>
+                </mat-select>
+              </td>
+            </tr>
+            <tr>
+              <td [ngStyle]="{'border':'none'}" width="180px"> </td>
+              <td [ngStyle]="{'border':'none'}">
+              <!--  <mat-slide-toggle [(ngModel)]="acc" (click)="accCheck(acc)"></mat-slide-toggle>
+                  <mat-radio-group [(ngModel)]="acc" (click)="accCheck(acc)">
+  <mat-radio-button value=true [ngStyle]="{'font-style': 'normal'}">Facebook</mat-radio-button>
+  <mat-radio-button value=false>Google</mat-radio-button>
+  </mat-radio-group>-->
+              </td>
+            </tr>
+
+          </table>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>
 <!--<mat-toolbar [ngStyle]="{'box-shadow':'0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)','position': 'fixed', 'right':' 0', 'left':' 0','bottom':'0', 'z-index': '1030'}">
   <h1 [ngStyle]="{'margin': 'auto','display':'block','font-family': 'Sofia','font-size':'22px'}">Places</h1>
